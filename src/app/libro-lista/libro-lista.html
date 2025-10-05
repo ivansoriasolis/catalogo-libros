@@ -1,6 +1,10 @@
 <h2>Libros disponibles</h2>
 <ul>
-  <li *ngFor="let libro of libros">
-    <strong>{{ libro.titulo }}</strong> - {{ libro.autor }} ({{ libro.anio }})
+  <li *ngFor="let libro of libros" (click)="onSeleccionarLibro(libro)">
+    <strong>{{ libro.titulo | uppercase}}</strong> - {{ libro.autor }} ({{ libro.anio }})
+    - Publicado: {{ libro.fechaPublicacion | date:'longDate' }}
   </li>
 </ul>
+
+<!-- Mostrar detalles solo si libroSeleccionado es null-->
+<app-libro-detalle *ngIf="libroSeleccionado" [libro]="libroSeleccionado"></app-libro-detalle>
