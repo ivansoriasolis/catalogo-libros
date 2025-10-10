@@ -12,6 +12,8 @@ import { LibroServicio } from '../services/libro-servicio';
 export class LibroLista {
 
   libroSeleccionado: any = null;
+  verDetalle: boolean = false;
+  textoBuscado: string = '';
 
   libros: any[] = [];
 
@@ -23,5 +25,10 @@ export class LibroLista {
 
   onSeleccionarLibro(libro: any) {
     this.libroSeleccionado = libro;
+    this.verDetalle = false;
+  }
+
+  onVerDetalle() {
+    this.verDetalle = true;
   }
 }
