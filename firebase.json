@@ -1,0 +1,10 @@
+{
+  "hosting": {
+    "public": "dist/catologo-libros/browser",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}
