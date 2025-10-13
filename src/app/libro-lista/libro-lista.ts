@@ -2,10 +2,11 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { LibroDetalle } from '../libro-detalle/libro-detalle';
 import { LibroServicio } from '../services/libro-servicio';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-libro-lista',
-  imports: [CommonModule, LibroDetalle],
+  imports: [CommonModule, LibroDetalle, FormsModule],
   templateUrl: './libro-lista.html',
   styleUrl: './libro-lista.css'
 })
