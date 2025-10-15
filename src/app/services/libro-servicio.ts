@@ -42,7 +42,11 @@ export class LibroServicio {
 
   constructor() { }
 
-  getLibros() {
-    return this.libros
+  getLibros(): Promise<Libro[]> {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(this.libros);
+      }, 2000); }
+    );
   }
 }
