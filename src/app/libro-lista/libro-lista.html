@@ -9,5 +9,5 @@
 </ul>
 
 <button [disabled]="!libroSeleccionado" (click)="onVerDetalle()">Ver detalle</button>
-<!-- Mostrar detalles solo si libroSeleccionado es null-->
-<app-libro-detalle *ngIf="verDetalle" [libro]="libroSeleccionado"></app-libro-detalle>
+
+<app-libro-detalle *ngIf="libroSeleccionado" [libro]="libroSeleccionado"></app-libro-detalle>
