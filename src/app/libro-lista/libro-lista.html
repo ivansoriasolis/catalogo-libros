@@ -3,8 +3,11 @@
 <p>Buscando: {{textoBuscado}}</p> 
 <ul>
   <li *ngFor="let libro of libros" (click)="onSeleccionarLibro(libro)"  >
-    <strong>{{ libro.titulo | uppercase}}</strong>
+    <strong>{{ libro.titulo | uppercase}}</strong> - {{ libro.autor }} ({{ libro.anio }})
+    - Publicado: {{ libro.fechaPublicacion | date:'longDate' }}
   </li>
 </ul>
 
 <button [disabled]="!libroSeleccionado" (click)="onVerDetalle()">Ver detalle</button>
+<!-- Mostrar detalles solo si libroSeleccionado es null-->
+<app-libro-detalle *ngIf="verDetalle" [libro]="libroSeleccionado"></app-libro-detalle>
