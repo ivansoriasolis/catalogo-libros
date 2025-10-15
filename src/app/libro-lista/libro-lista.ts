@@ -1,23 +1,29 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { LibroServicio } from '../services/libro-servicio';
 import { FormsModule } from '@angular/forms';
-import { LibroDetalle } from '../libro-detalle/libro-detalle';
 
 @Component({
   selector: 'app-libro-lista',
-  imports: [CommonModule, FormsModule, LibroDetalle],
+  imports: [CommonModule, FormsModule],
   templateUrl: './libro-lista.html',
   styleUrl: './libro-lista.css'
 })
 export class LibroLista {
+  @Output() seleccionado = new EventEmitter<any>();
+
   libroSeleccionado: any = null;
   verDetalle: boolean = false;
   textoBuscado: string = '';
 
   libros: any[] = [];
 
-  constructor(private libroServicio:LibroServicio) {}
+  constructor(private libroServicio: LibroServicio) { }
+
+  onVerDetalle() {
+    this.verDetalle = true;
+    this.seleccionado.emit(this.libroSeleccionado);
+  }
 
   ngOnInit() {
     this.libros = this.libroServicio.getLibros();
@@ -28,7 +34,5 @@ export class LibroLista {
     this.verDetalle = false;
   }
 
-  onVerDetalle() {
-    this.verDetalle = true;
-  }
+
 }
