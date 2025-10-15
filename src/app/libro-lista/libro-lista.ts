@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Output } from '@angular/core';
 import { LibroServicio } from '../services/libro-servicio';
 import { FormsModule } from '@angular/forms';
+import { Libro } from '../models/libro';
 
 @Component({
   selector: 'app-libro-lista',
@@ -16,7 +17,7 @@ export class LibroLista {
   verDetalle: boolean = false;
   textoBuscado: string = '';
 
-  libros: any[] = [];
+  libros: Libro[] = [];
 
   constructor(private libroServicio: LibroServicio) { }
 
@@ -25,8 +26,8 @@ export class LibroLista {
     this.seleccionado.emit(this.libroSeleccionado);
   }
 
-  ngOnInit() {
-    this.libros = this.libroServicio.getLibros();
+  async ngOnInit() {
+    this.libros = await this.libroServicio.getLibros();
   }
 
   onSeleccionarLibro(libro: any) {

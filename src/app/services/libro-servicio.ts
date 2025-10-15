@@ -1,18 +1,52 @@
 import { Injectable } from '@angular/core';
+import { Libro } from '../models/libro';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LibroServicio {
+  libros: Libro[] = [
+    {
+      titulo: 'Cien Años de Soledad',
+      autor: 'Gabriel García Márquez',  
+      anio: 1967,
+      descripcion: 'Una novela que narra la historia de la familia Buendía a lo largo de varias generaciones en el pueblo ficticio de Macondo.',
+      fechaPublicacion: new Date('1967-05-30') },
+    {
+      titulo: 'Don Quijote de la Mancha',   
+      autor: 'Miguel de Cervantes',
+      anio: 1605,
+      descripcion: 'Considerada la primera novela moderna, sigue las aventuras del ingenioso hidalgo Don Quijote y su fiel escudero Sancho Panza.',
+      fechaPublicacion: new Date('1605-01-16') },
+    {
+      titulo: 'La Sombra del Viento',         
+      autor: 'Carlos Ruiz Zafón',
+      anio: 2001,
+      descripcion: 'Un joven llamado Daniel descubre un libro olvidado en el Cementerio de los Libros Olvidados, lo que lo lleva a una serie de misterios y secretos en la Barcelona de la posguerra.', 
+      fechaPublicacion: new Date('2001-04-12') },
+
+    {
+      titulo: 'El Amor en los Tiempos del Cólera', 
+      autor: 'Gabriel García Márquez',        
+      anio: 1985,
+      descripcion: 'Una historia de amor que abarca más de medio siglo, explorando la paciencia y la perseverancia en el amor verdadero.',
+      fechaPublicacion: new Date('1985-09-05') },
+
+    {
+      titulo: 'Ficciones',
+      autor: 'Jorge Luis Borges', 
+      anio: 1944,
+      descripcion: 'Una colección de cuentos que exploran temas como la realidad, la identidad y el infinito, característicos del estilo literario de Borges.',
+      fechaPublicacion: new Date('1944-06-15') }
+  ];
+
   constructor() { }
 
-  getLibros() {
-    return [
-      { id: 1, titulo: 'Cien Años de Soledad', autor: 'Gabriel García Márquez', descripcion: 'Una novela que narra la historia de la familia Buendía a lo largo de varias generaciones en el pueblo ficticio de Macondo.' },
-      { id: 2, titulo: 'Don Quijote de la Mancha', autor: 'Miguel de Cervantes', descripcion: 'La historia de un hidalgo que, influenciado por los libros de caballerías, decide convertirse en caballero andante.' },
-      { id: 3, titulo: 'La Sombra del Viento', autor: 'Carlos Ruiz Zafón', descripcion: 'Un joven descubre un libro olvidado en una biblioteca secreta y se ve envuelto en un misterio que abarca décadas.' },
-      { id: 4, titulo: 'El Amor en los Tiempos del Cólera', autor: 'Gabriel García Márquez', descripcion: 'Una historia de amor que se desarrolla a lo largo de más de cincuenta años, explorando la paciencia y la perseverancia del amor verdadero.' },
-      { id: 5, titulo: 'Ficciones', autor: 'Jorge Luis Borges', descripcion: 'Una colección de cuentos que exploran temas como la realidad, la identidad y el infinito a través de narrativas complejas y metafísicas.' }
-    ];
+  getLibros(): Promise<Libro[]> {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(this.libros);
+      }, 2000); }
+    );
   }
 }
