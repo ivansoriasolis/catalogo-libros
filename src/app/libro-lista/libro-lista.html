@@ -1,8 +1,9 @@
 <h2>Libros disponibles</h2>
-<input type="text" [(ngModel)]="textoBuscado" placeholder="Buscar libro..." >
+<input type="text" [(ngModel)]="textoBuscado" (input)="onChange()" placeholder="Buscar libro..." >
 <p>Buscando: {{textoBuscado}}</p> 
 <ul>
-  <li *ngFor="let libro of libros" (click)="onSeleccionarLibro(libro)"  >
+  <li *ngFor="let libro of librosFiltrados" (click)="onSeleccionarLibro(libro)"  
+  [ngStyle]="{ color: libro === libroSeleccionado ? 'red':'black'}">
     <strong>{{ libro.titulo | uppercase}}</strong>
   </li>
 </ul>
