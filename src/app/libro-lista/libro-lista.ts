@@ -3,6 +3,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { LibroServicio } from '../services/libro-servicio';
 import { FormsModule } from '@angular/forms';
 import { Libro } from '../models/libro';
+import { Route, Router } from '@angular/router';
 
 @Component({
   selector: 'app-libro-lista',
@@ -18,16 +19,21 @@ export class LibroLista {
   textoBuscado: string = '';
 
   libros: Libro[] = [];
+  librosFiltrados: Libro[] = [];
 
-  constructor(private libroServicio: LibroServicio) { }
+  constructor(private libroServicio: LibroServicio,
+    private router: Router
+  ) { }
 
   onVerDetalle() {
     this.verDetalle = true;
     this.seleccionado.emit(this.libroSeleccionado);
+    this.router.navigate(['detalle', this.libroSeleccionado.id]);
   }
 
   async ngOnInit() {
     this.libros = await this.libroServicio.getLibros();
+    this.librosFiltrados = [...this.libros];
   }
 
   onSeleccionarLibro(libro: any) {
@@ -35,5 +41,10 @@ export class LibroLista {
     this.verDetalle = false;
   }
 
-
+  onChange() {  
+    this.librosFiltrados = this.libros.filter(libro => 
+      libro.titulo.toLowerCase().includes(this.textoBuscado.toLowerCase()) ||
+      libro.autor.toLowerCase().includes(this.textoBuscado.toLowerCase())
+    );
+  }
 }

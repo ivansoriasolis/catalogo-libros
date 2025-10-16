@@ -1,5 +1,4 @@
 <app-cabecera></app-cabecera>
 <div class="contenedor">
-  <app-libro-lista (seleccionado)="libroSeleccionado = $event"> </app-libro-lista>
-  <app-libro-detalle *ngIf="libroSeleccionado" [libro]="libroSeleccionado"></app-libro-detalle>
+  <router-outlet></router-outlet>
 </div>
