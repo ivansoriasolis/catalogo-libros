@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Libro } from '../models/libro';
+import { Libro } from '../models/libro'; // Interfaz Libro
 
 @Injectable({
   providedIn: 'root'
 })
 export class LibroServicio {
-  libros: Libro[] = [
+  libros: Libro[] = [ // Datos de ejemplo
     {
       titulo: 'Cien Años de Soledad',
       autor: 'Gabriel García Márquez',  
@@ -42,11 +42,12 @@ export class LibroServicio {
 
   constructor() { }
 
-  getLibros(): Promise<Libro[]> {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(this.libros);
-      }, 2000); }
+  // Simula una llamada asíncrona para obtener los libros
+  getLibros(): Promise<Libro[]> { // Devuelve una promesa que se resuelve con la lista de libros después de un retraso
+    return new Promise((resolve) => { // La promesa se resuelve después de un retraso simulado
+      setTimeout(() => { // Simula un retraso de 2 segundos
+        resolve(this.libros); // Resuelve la promesa con la lista de libros
+      }, 2000); } // 2000 ms = 2 segundos
     );
   }
 }
