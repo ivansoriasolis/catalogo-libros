@@ -51,7 +51,7 @@ export class LibroServicio {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve(this.libros);
-      }, 2000); }
+      }, 1000); }
     );
   }
 
