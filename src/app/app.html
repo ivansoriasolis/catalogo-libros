@@ -1,5 +1,7 @@
 <app-cabecera></app-cabecera>
 <div class="contenedor">
+  <!-- Pasa el libro seleccionado al componente de detalle -->
   <app-libro-lista (seleccionado)="libroSeleccionado = $event"> </app-libro-lista>
+  <!-- Muestra el componente de detalle solo si hay un libro seleccionado -->
   <app-libro-detalle *ngIf="libroSeleccionado" [libro]="libroSeleccionado"></app-libro-detalle>
 </div>

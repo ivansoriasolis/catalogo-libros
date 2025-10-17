@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, Input } from '@angular/core'; // Importa Input para recibir datos del componente padre
 
 @Component({
   selector: 'app-libro-detalle',
@@ -8,5 +8,5 @@ import { Component, Input } from '@angular/core';
   styleUrl: './libro-detalle.css'
 })
 export class LibroDetalle {
-  @Input() libro: any = null;
+  @Input() libro: any = null; // Recibe el libro seleccionado como entrada
 }
