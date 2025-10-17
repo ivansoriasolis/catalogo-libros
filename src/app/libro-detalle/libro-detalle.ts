@@ -8,6 +8,6 @@ import { Component, Input } from '@angular/core';
   styleUrl: './libro-detalle.css'
 })
 export class LibroDetalle {
-  @Input() libro: any = null;
+  @Input() libro: any = null; // Recibe el libro seleccionado desde el componente padre
 
 }
