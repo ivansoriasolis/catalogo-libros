@@ -13,6 +13,7 @@ export class Login {
     private router: Router
   ) { }
 
+  // Simula el proceso de login
   login(){
     this.auth.login();
     this.router.navigate(['']);

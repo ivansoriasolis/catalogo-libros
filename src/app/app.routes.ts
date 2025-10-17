@@ -4,12 +4,12 @@ import { LibroDetalle } from './libro-detalle/libro-detalle';
 import { About } from './about/about';
 import { authGuard } from './guards/auth-guard';
 import { Login } from './login/login';
-import { libroResolver } from './resolvers/libro-resolver';
+import { libroResolver } from './resolvers/libro-resolver';// <-- Importa el resolvedor
 
 export const routes: Routes = [
     { path: '', component: LibroLista },
     { path: 'detalle/:id', component: LibroDetalle, 
-        canActivate: [authGuard], resolve: { libro: libroResolver }     
+        canActivate: [authGuard], resolve: { libro: libroResolver } // <-- Aquí se usa el resolvedor     
     },
     { path: 'about', component: About},
     { path: 'login', component: Login},

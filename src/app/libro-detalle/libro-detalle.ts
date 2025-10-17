@@ -17,7 +17,8 @@ export class LibroDetalle {
     private libroServicio:LibroServicio
   ) { }
 
+  // Usa el resolvedor para obtener el libro antes de inicializar el componente
   async ngOnInit() {
-    this.libro = this.ruta.snapshot.data['libro'];
+    this.libro = this.ruta.snapshot.data['libro']; // Obtiene el libro resuelto por el resolvedor
   }
 }
