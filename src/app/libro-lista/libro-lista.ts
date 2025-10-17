@@ -10,7 +10,7 @@ import { LibroDetalle } from '../libro-detalle/libro-detalle';
 })
 export class LibroLista {
 
-  libroSeleccionado: any = null;
+  libroSeleccionado: any = null; // Variable para almacenar el libro seleccionado
 
   libros = [
     { titulo: 'Cien años de soledad', autor: 'Gabriel García Márquez', anio: 1967, fechaPublicacion: new Date(1967, 5, 5)   },
@@ -18,6 +18,7 @@ export class LibroLista {
     { titulo: 'La sombra del viento', autor: 'Carlos Ruiz Zafón', anio: 2001, fechaPublicacion: new Date(2001, 3, 1) },
   ];
 
+  // Método para manejar la selección de un libro
   onSeleccionarLibro(libro: any) {
     this.libroSeleccionado = libro;
   }

@@ -1,10 +1,16 @@
 <h2>Libros disponibles</h2>
 <ul>
-  <li *ngFor="let libro of libros" (click)="onSeleccionarLibro(libro)">
-    <strong>{{ libro.titulo | uppercase}}</strong> - {{ libro.autor }} ({{ libro.anio }})
-    - Publicado: {{ libro.fechaPublicacion | date:'longDate' }}
+  <!-- Itera sobre la lista de libros y muestra cada uno -->
+  <li *ngFor="let libro of libros" (click)="onSeleccionarLibro(libro)"> <!-- Evento click para seleccionar un libro -->
+    <strong>{{ libro.titulo | uppercase}}</strong> - {{ libro.autor }} ({{ libro.anio }}) <!-- Pipe de mayúsculas uppercase-->
+    - Publicado: {{ libro.fechaPublicacion | date:'longDate' }} <!-- Pipe de fecha date con formato longDate -->
   </li>
 </ul>
 
-<!-- Mostrar detalles solo si libroSeleccionado es null-->
-<app-libro-detalle *ngIf="libroSeleccionado" [libro]="libroSeleccionado"></app-libro-detalle>
+<!-- Mostrar detalles solo si libroSeleccionado no es null -->
+<app-libro-detalle *ngIf="libroSeleccionado" [libro]="libroSeleccionado"></app-libro-detalle> <!-- Pasa el libro seleccionado al componente hijo -->
+<!-- El asterisco (*) indica una directiva estructural, en este caso *ngIf -->
+<!-- que añade o elimina el elemento del DOM según la condición. -->
+<!-- [libro] es una propiedad de entrada (Input) que permite pasar datos al componente hijo. -->
+<!-- [libro] enlaza la propiedad libro del componente hijo con la variable libroSeleccionado del componente padre. -->
+<!-- El componente hijo (LibroDetalle) puede acceder a los datos del libro seleccionado a través de esta propiedad. -->
