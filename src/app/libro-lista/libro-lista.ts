@@ -3,11 +3,11 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { LibroServicio } from '../services/libro-servicio';
 import { FormsModule } from '@angular/forms';
 import { Libro } from '../models/libro';
-import { Route, Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-libro-lista',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './libro-lista.html',
   styleUrl: './libro-lista.css'
 })
