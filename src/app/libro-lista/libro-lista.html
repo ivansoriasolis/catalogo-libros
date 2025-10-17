@@ -1,6 +1,6 @@
 <h2>Libros disponibles</h2>
 <ul>
-  <li *ngFor="let libro of libros">
+  <li *ngFor="let libro of libros">  <!-- genera tantas etiquetas <li> como libros hay en el array libros-->
     <strong>{{ libro.titulo }}</strong> - {{ libro.autor }} ({{ libro.anio }})
   </li>
 </ul>
