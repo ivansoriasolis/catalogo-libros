@@ -5,6 +5,7 @@
   <li *ngFor="let libro of librosFiltrados" (click)="onSeleccionarLibro(libro)"  
   [ngStyle]="{ color: libro === libroSeleccionado ? 'red':'black'}">
     <strong>{{ libro.titulo | uppercase}}</strong>
+    <a [routerLink]="['detalle', libro.id]">Ver</a>
   </li>
 </ul>
 
