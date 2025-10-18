@@ -1,18 +1,18 @@
-<form (ngSubmit)="onSubmit()">
+<form [formGroup]="libroForm" (ngSubmit)="onSubmit()">
   <label>Título:
-    <input name="titulo" [(ngModel)]="libro.titulo">
+    <input formControlName="titulo">
   </label><br>
 
   <label>Autor:
-    <input name="autor" [(ngModel)]="libro.autor">
+    <input formControlName="autor">
   </label><br>
 
   <label>Año:
-    <input name="anio" type="number" [(ngModel)]="libro.anio">
+    <input type="number" formControlName="anio">
   </label><br>
 
   <label>Fecha de publicación:
-    <input name="fechaPublicacion" type="date" [(ngModel)]="libro.fechaPublicacion">
+    <input type="date" formControlName="fechaPublicacion">
   </label><br>
 
   <button type="submit">Agregar libro</button>

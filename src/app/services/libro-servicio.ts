@@ -7,21 +7,21 @@ import { Libro } from '../models/libro';
 export class LibroServicio {
   libros: Libro[] = [
     {
-      id: 1,
+      id: this.generateUuid(),
       titulo: 'Cien Años de Soledad',
       autor: 'Gabriel García Márquez',  
       anio: 1967,
       descripcion: 'Una novela que narra la historia de la familia Buendía a lo largo de varias generaciones en el pueblo ficticio de Macondo.',
       fechaPublicacion: new Date('1967-05-30') },
     {
-      id: 2,
+      id: this.generateUuid(),
       titulo: 'Don Quijote de la Mancha',   
       autor: 'Miguel de Cervantes',
       anio: 1605,
       descripcion: 'Considerada la primera novela moderna, sigue las aventuras del ingenioso hidalgo Don Quijote y su fiel escudero Sancho Panza.',
       fechaPublicacion: new Date('1605-01-16') },
     {
-      id: 3,
+      id: this.generateUuid(),
       titulo: 'La Sombra del Viento',         
       autor: 'Carlos Ruiz Zafón',
       anio: 2001,
@@ -29,7 +29,7 @@ export class LibroServicio {
       fechaPublicacion: new Date('2001-04-12') },
 
     {
-      id: 4,
+      id: this.generateUuid(),
       titulo: 'El Amor en los Tiempos del Cólera', 
       autor: 'Gabriel García Márquez',        
       anio: 1985,
@@ -37,7 +37,7 @@ export class LibroServicio {
       fechaPublicacion: new Date('1985-09-05') },
 
     {
-      id: 5,
+      id: this.generateUuid(),
       titulo: 'Ficciones',
       autor: 'Jorge Luis Borges', 
       anio: 1944,

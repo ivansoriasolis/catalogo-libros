@@ -1,34 +1,37 @@
 import { Component } from '@angular/core';
 import { Libro } from '../models/libro';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { LibroServicio } from '../services/libro-servicio';
 
 @Component({
   selector: 'app-libro-form',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './libro-form.html',
   styleUrl: './libro-form.css'
 })
 export class LibroForm {
-  libro: Libro = {
-    id: '',
-    titulo: '',
-    autor: '',
-    anio: 0,
-    descripcion: '',
-    fechaPublicacion: new Date(),
-  }
-
+  libroForm: FormGroup;
   enviado = false;
+  libro!: Libro;
 
-  constructor(private libroServicio:LibroServicio) {}
+  constructor(private libroServicio:LibroServicio,
+    private fb: FormBuilder,
+  ) {
+    this.libroForm = this.fb.group({
+      titulo: [''],
+      autor: [''],  
+      anio: [''],
+      descripcion: [''],
+      fechaPublicacion: ['']
+    }); 
+  }
 
   async onSubmit() {
     this.enviado = true;
-    // Lógica para agregar el libro
-    const libroAgregado = await this.libroServicio.agregarLibro(this.libro);
-    this.libro = libroAgregado;
+    const libro = this.libroForm.value;
+    const libroAgregado = await this.libroServicio.agregarLibro(libro);
+    this.libro = libroAgregado
     console.log('Libro agregado:', libroAgregado);
   }
 }
