@@ -19,7 +19,7 @@ export class LibroDetalle {
 
   async ngOnInit() {
     const id = this.ruta.snapshot.params['id'];
-    const libro = await this.libroServicio.getLibroPorId(+id);
+    const libro = await this.libroServicio.getLibroPorId(id);
     this.libro = libro;
   }
 }

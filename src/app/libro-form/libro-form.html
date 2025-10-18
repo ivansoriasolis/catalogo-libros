@@ -1,0 +1,24 @@
+<form [formGroup]="libroForm" (ngSubmit)="onSubmit()">
+  <label>Título:
+    <input formControlName="titulo">
+  </label><br>
+
+  <label>Autor:
+    <input formControlName="autor">
+  </label><br>
+
+  <label>Año:
+    <input type="number" formControlName="anio">
+  </label><br>
+
+  <label>Fecha de publicación:
+    <input type="date" formControlName="fechaPublicacion">
+  </label><br>
+
+  <button type="submit">Agregar libro</button>
+</form>
+
+<div *ngIf="enviado">
+  <h4>Libro enviado:</h4>
+  <pre>{{ libro | json }}</pre>
+</div>
