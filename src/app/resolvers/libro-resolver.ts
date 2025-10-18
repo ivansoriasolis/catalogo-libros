@@ -5,5 +5,5 @@ import { LibroServicio } from '../services/libro-servicio';
 export const libroResolver: ResolveFn<any> = (route: ActivatedRouteSnapshot) => {
   const service = inject<LibroServicio>(LibroServicio);
   const id = route.paramMap.get('id')!;
-  return service.getLibroPorId(+id);
+  return service.getLibroPorId(id);
 };

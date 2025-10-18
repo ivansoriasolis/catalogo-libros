@@ -55,7 +55,7 @@ export class LibroServicio {
     );
   }
 
-  getLibroPorId(id: number): Promise<Libro> {
+  getLibroPorId(id: string): Promise<Libro> {
     return new Promise((resolve) => {
       setTimeout(() => {
         const libro = this.libros.find(libro => libro.id === id);
@@ -63,5 +63,21 @@ export class LibroServicio {
         resolve(libro!);
       }, 1000); }
     );    
+  }
+
+  generateUuid(): string {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
+  }
+
+  agregarLibro(libro: Omit<Libro, 'id'>): Promise<Libro> {
+    const nuevoLibro: Libro = {
+      ...libro, 
+      id: this.generateUuid()
+      };
+    this.libros.push(nuevoLibro);
+    return Promise.resolve(nuevoLibro);
   }
 }
