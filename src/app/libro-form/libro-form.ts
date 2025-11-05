@@ -17,24 +17,25 @@ export class LibroForm {
   libroForm!: FormGroup;
   enviado = false;
   libro!: Libro;
-  titulosExistentes: string[] = [];
+  titulosExistentes: string[] = []; // Almacena los títulos existentes para la validación asíncrona
 
   constructor(private libroServicio:LibroServicio,
     private fb: FormBuilder,
     private router: Router,
   ) {  }
 
+  // Inicializa el formulario y carga los títulos existentes para la validación asíncrona
   async ngOnInit() {
-    this.titulosExistentes = (await this.libroServicio.getLibros()).map(libro => libro.titulo.trim().toLowerCase());
+    this.titulosExistentes = (await this.libroServicio.getLibros()).map(libro => libro.titulo.trim().toLowerCase()); // Obtener títulos existentes en minúsculas y sin espacios
 
     this.libroForm = this.fb.group({
       titulo: ['', 
         { validators: [Validators.required],
-          asyncValidators: [validadorTituloExiste(this.titulosExistentes)],
-          updateOn: 'blur',
+          asyncValidators: [validadorTituloExiste(this.titulosExistentes)], // Validador asíncrono
+          updateOn: 'blur', // Ejecutar validador al perder el foco
         }],
       autor: ['', Validators.required],  
-      anio: ['', [Validators.required, Validators.pattern('^[0-9]{4}$'), validadorAnio]], 
+      anio: ['', [Validators.required, Validators.pattern('^[0-9]{4}$'), validadorAnio]], // Usar validador personalizado
       descripcion: [''],
       fechaPublicacion: ['', Validators.required]
     }); 

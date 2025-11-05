@@ -1,4 +1,4 @@
-<form *ngIf="libroForm" [formGroup]="libroForm" (ngSubmit)="onSubmit()">
+<form *ngIf="libroForm" [formGroup]="libroForm" (ngSubmit)="onSubmit()"> <!-- Asegura que el formulario esté inicializado -->
   <label>Título:
     <input formControlName="titulo">
   </label>
@@ -6,7 +6,7 @@
     El título es obligatorio.
   </div>
   <div class='error' *ngIf="libroForm.get('titulo')?.errors?.['tituloExiste'] && libroForm.get('titulo')?.touched">
-    El título ya existe.
+    El título ya existe. <!-- Mensaje de error para título duplicado -->
   </div>
   <br>
   <label>Autor:
@@ -27,7 +27,7 @@
       El año debe ser un número de 4 dígitos.
     </div>
     <div *ngIf="libroForm.get('anio')?.errors?.['anioInvalido']">
-      El año debe estar entre 1500 y el año actual.
+      El año debe estar entre 1500 y el año actual. <!-- Mensaje de error para año inválido -->
     </div>
   </div>
   <br>
