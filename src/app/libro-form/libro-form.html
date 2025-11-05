@@ -1,6 +1,6 @@
-<form [formGroup]="libroForm" (ngSubmit)="onSubmit()">
+<form [formGroup]="libroForm" (ngSubmit)="onSubmit()"> <!-- Añadido (ngSubmit) -->
   <label>Título:
-    <input formControlName="titulo">
+    <input formControlName="titulo"> <!-- Cambiado a formControlName -->
   </label><br>
 
   <label>Autor:
