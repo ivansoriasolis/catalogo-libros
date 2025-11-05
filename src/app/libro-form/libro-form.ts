@@ -23,7 +23,7 @@ export class LibroForm {
     this.libroForm = this.fb.group({
       titulo: ['', Validators.required],
       autor: ['', Validators.required],  
-      anio: ['', [Validators.required, Validators.pattern('^[0-9]{4}$')]], 
+      anio: ['', [Validators.required, Validators.pattern('^[0-9]{4}$')]], // Validar que sea un año de 4 dígitos
       descripcion: [''],
       fechaPublicacion: ['', Validators.required]
     }); 

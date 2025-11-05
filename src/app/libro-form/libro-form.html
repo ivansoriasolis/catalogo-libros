@@ -2,19 +2,19 @@
   <label>Título:
     <input formControlName="titulo">
   </label>
-  <div class='error' *ngIf="libroForm.get('titulo')?.invalid && libroForm.get('titulo')?.touched">
+  <div class='error' *ngIf="libroForm.get('titulo')?.invalid && libroForm.get('titulo')?.touched"> <!-- Mensajes de error específicos para el título -->
     El título es obligatorio.
   </div>
   <label>Autor:
     <input formControlName="autor">
   </label>
-  <div class='error' *ngIf="libroForm.get('autor')?.invalid && libroForm.get('autor')?.touched">
+  <div class='error' *ngIf="libroForm.get('autor')?.invalid && libroForm.get('autor')?.touched"> <!-- Mensajes de error específicos para el autor -->
     El autor es obligatorio.
   </div>
   <label>Año:
     <input type="number" formControlName="anio">
   </label>
-  <div class='error' *ngIf="libroForm.get('anio')?.invalid && libroForm.get('anio')?.touched">
+  <div class='error' *ngIf="libroForm.get('anio')?.invalid && libroForm.get('anio')?.touched"> <!-- Mensajes de error específicos para el año -->
     <div *ngIf="libroForm.get('anio')?.errors?.['required']">
       El año es obligatorio.
     </div>
@@ -25,7 +25,7 @@
   <label>Descripción:
     <textarea formControlName="descripcion"></textarea>
   </label>
-  <div class='error' *ngIf="libroForm.get('descripcion')?.invalid && libroForm.get('descripcion')?.touched">
+  <div class='error' *ngIf="libroForm.get('descripcion')?.invalid && libroForm.get('descripcion')?.touched"> <!-- Mensajes de error específicos para la descripción -->
     La descripción es obligatoria.
   </div>
   <label>Fecha de publicación:
@@ -34,7 +34,7 @@
   <div class='error' *ngIf="libroForm.get('fechaPublicacion')?.invalid && libroForm.get('fechaPublicacion')?.touched">
     La fecha de publicación es obligatoria.
   </div>
-  <button type="submit" [disabled]="libroForm.invalid">Agregar libro</button>
+  <button type="submit" [disabled]="libroForm.invalid">Agregar libro</button> <!-- Deshabilitar el botón si el formulario es inválido -->
 </form>
 
 <div *ngIf="enviado">
