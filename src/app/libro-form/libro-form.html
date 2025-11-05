@@ -1,16 +1,21 @@
-<form [formGroup]="libroForm" (ngSubmit)="onSubmit()">
+<form *ngIf="libroForm" [formGroup]="libroForm" (ngSubmit)="onSubmit()">
   <label>Título:
     <input formControlName="titulo">
   </label>
   <div class='error' *ngIf="libroForm.get('titulo')?.invalid && libroForm.get('titulo')?.touched">
     El título es obligatorio.
   </div>
+  <div class='error' *ngIf="libroForm.get('titulo')?.errors?.['tituloExiste'] && libroForm.get('titulo')?.touched">
+    El título ya existe.
+  </div>
+  <br>
   <label>Autor:
     <input formControlName="autor">
   </label>
   <div class='error' *ngIf="libroForm.get('autor')?.invalid && libroForm.get('autor')?.touched">
     El autor es obligatorio.
   </div>
+  <br>
   <label>Año:
     <input type="number" formControlName="anio">
   </label>
@@ -21,19 +26,25 @@
     <div *ngIf="libroForm.get('anio')?.errors?.['pattern']">
       El año debe ser un número de 4 dígitos.
     </div>
+    <div *ngIf="libroForm.get('anio')?.errors?.['anioInvalido']">
+      El año debe estar entre 1500 y el año actual.
+    </div>
   </div>
+  <br>
   <label>Descripción:
     <textarea formControlName="descripcion"></textarea>
   </label>
   <div class='error' *ngIf="libroForm.get('descripcion')?.invalid && libroForm.get('descripcion')?.touched">
     La descripción es obligatoria.
   </div>
+  <br>
   <label>Fecha de publicación:
     <input type="date" formControlName="fechaPublicacion">
   </label>
   <div class='error' *ngIf="libroForm.get('fechaPublicacion')?.invalid && libroForm.get('fechaPublicacion')?.touched">
     La fecha de publicación es obligatoria.
   </div>
+  <br>
   <button type="submit" [disabled]="libroForm.invalid">Agregar libro</button>
 </form>
 

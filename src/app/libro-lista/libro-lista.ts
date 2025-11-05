@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Output } from '@angular/core';
-import { LibroServicio } from '../services/libro-servicio';
+import { LibroServicio } from '../servicios/libro-servicio';
 import { FormsModule } from '@angular/forms';
-import { Libro } from '../models/libro';
+import { Libro } from '../modelos/libro';
 import { Router, RouterLink } from '@angular/router';
 
 @Component({
