@@ -11,11 +11,15 @@
     <input type="number" formControlName="anio">
   </label><br>
 
+  <label>Descripción:
+    <textarea formControlName="descripcion"></textarea>
+  </label><br>
+
   <label>Fecha de publicación:
     <input type="date" formControlName="fechaPublicacion">
   </label><br>
 
-  <button type="submit">Agregar libro</button>
+  <button type="submit" [disabled]="libroForm.invalid">Agregar libro</button>
 </form>
 
 <div *ngIf="enviado">

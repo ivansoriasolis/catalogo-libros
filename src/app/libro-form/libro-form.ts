@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Libro } from '../models/libro';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { LibroServicio } from '../services/libro-servicio';
 import { Router } from '@angular/router';
 
@@ -21,11 +21,11 @@ export class LibroForm {
     private router: Router,
   ) {
     this.libroForm = this.fb.group({
-      titulo: [''],
-      autor: [''],  
-      anio: [''],
+      titulo: ['', Validators.required],
+      autor: ['', Validators.required],  
+      anio: ['', [Validators.required, Validators.pattern('^[0-9]{4}$')]],
       descripcion: [''],
-      fechaPublicacion: ['']
+      fechaPublicacion: ['', Validators.required]
     }); 
   }
 
