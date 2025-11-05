@@ -23,7 +23,7 @@ export class LibroForm {
     this.libroForm = this.fb.group({
       titulo: ['', Validators.required],
       autor: ['', Validators.required],  
-      anio: ['', [Validators.required, Validators.pattern('^[0-9]{4}$')]],
+      anio: ['', [Validators.required, Validators.pattern('^[0-9]{4}$')]], 
       descripcion: [''],
       fechaPublicacion: ['', Validators.required]
     }); 
