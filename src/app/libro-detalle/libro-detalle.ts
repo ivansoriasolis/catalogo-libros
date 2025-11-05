@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { LibroServicio } from '../services/libro-servicio';
-import { Libro } from '../models/libro';
+import { LibroServicio } from '../servicios/libro-servicio';
+import { Libro } from '../modelos/libro';
 
 @Component({
   selector: 'app-libro-detalle',

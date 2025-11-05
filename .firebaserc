@@ -1,0 +1,16 @@
+{
+  "projects": {
+    "catalogo": "catalogo-libros-a0e78"
+  },
+  "targets": {
+    "catalogo-libros-24d6d": {
+      "hosting": {
+        "prod": [
+          "catalogo-libros-a0e78",
+          "nuevo-sitio-prod"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}
