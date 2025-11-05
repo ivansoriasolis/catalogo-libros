@@ -72,12 +72,13 @@ export class LibroServicio {
     });
   }
 
-  agregarLibro(libro: Omit<Libro, 'id'>): Promise<Libro> {
-    const nuevoLibro: Libro = {
-      ...libro, 
-      id: this.generateUuid()
-      };
-    this.libros.push(nuevoLibro);
+  // Método para agregar un nuevo libro
+  agregarLibro(libro: Libro): Promise<Libro> {
+    const nuevoLibro: Libro = { 
+      ...libro, // Copia las propiedades del libro recibido
+      id: this.generateUuid()  // Genera un nuevo UUID para el 'id'
+      }; 
+    this.libros.push(nuevoLibro);   // Agrega el nuevo libro al arreglo
     return Promise.resolve(nuevoLibro);
   }
 }

@@ -3,6 +3,7 @@ import { Libro } from '../models/libro';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { LibroServicio } from '../services/libro-servicio';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-libro-form',
@@ -17,6 +18,7 @@ export class LibroForm {
 
   constructor(private libroServicio:LibroServicio,
     private fb: FormBuilder,
+    private router: Router,
   ) {
     this.libroForm = this.fb.group({
       titulo: [''],
@@ -33,5 +35,6 @@ export class LibroForm {
     const libroAgregado = await this.libroServicio.agregarLibro(libro);
     this.libro = libroAgregado
     console.log('Libro agregado:', libroAgregado);
+    this.router.navigate(['/']);
   }
 }
