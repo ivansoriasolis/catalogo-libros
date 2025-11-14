@@ -1,84 +1,51 @@
 import { Injectable } from '@angular/core';
+import { firstValueFrom, Observable } from 'rxjs';
+import { addDoc, collection, deleteDoc, doc, getDoc, setDoc, updateDoc, where } from '@angular/fire/firestore';
+import { collectionData, Firestore } from '@angular/fire/firestore';
 import { Libro } from '../modelos/libro';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LibroServicio {
-  libros: Libro[] = [
-    {
-      id: this.generateUuid(),
-      titulo: 'Cien Años de Soledad',
-      autor: 'Gabriel García Márquez',  
-      anio: 1967,
-      descripcion: 'Una novela que narra la historia de la familia Buendía a lo largo de varias generaciones en el pueblo ficticio de Macondo.',
-      fechaPublicacion: new Date('1967-05-30') },
-    {
-      id: this.generateUuid(),
-      titulo: 'Don Quijote de la Mancha',   
-      autor: 'Miguel de Cervantes',
-      anio: 1605,
-      descripcion: 'Considerada la primera novela moderna, sigue las aventuras del ingenioso hidalgo Don Quijote y su fiel escudero Sancho Panza.',
-      fechaPublicacion: new Date('1605-01-16') },
-    {
-      id: this.generateUuid(),
-      titulo: 'La Sombra del Viento',         
-      autor: 'Carlos Ruiz Zafón',
-      anio: 2001,
-      descripcion: 'Un joven llamado Daniel descubre un libro olvidado en el Cementerio de los Libros Olvidados, lo que lo lleva a una serie de misterios y secretos en la Barcelona de la posguerra.', 
-      fechaPublicacion: new Date('2001-04-12') },
+  libros: Libro[] = [];
+  titulos: string[] = [];
+  
+  constructor(private firestore: Firestore) {  }
 
-    {
-      id: this.generateUuid(),
-      titulo: 'El Amor en los Tiempos del Cólera', 
-      autor: 'Gabriel García Márquez',        
-      anio: 1985,
-      descripcion: 'Una historia de amor que abarca más de medio siglo, explorando la paciencia y la perseverancia en el amor verdadero.',
-      fechaPublicacion: new Date('1985-09-05') },
-
-    {
-      id: this.generateUuid(),
-      titulo: 'Ficciones',
-      autor: 'Jorge Luis Borges', 
-      anio: 1944,
-      descripcion: 'Una colección de cuentos que exploran temas como la realidad, la identidad y el infinito, característicos del estilo literario de Borges.',
-      fechaPublicacion: new Date('1944-06-15') }
-  ];
-
-  constructor() { }
-
-  getLibros(): Promise<Libro[]> {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(this.libros);
-      }, 2000); }
-    );
+  async getTitles(){
+    const books = await firstValueFrom(this.getLibros());
+    return books.map(libro => libro.titulo);
   }
 
-  getLibroPorId(id: string): Promise<Libro> {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        const libro = this.libros.find(libro => libro.id === id);
-        console.log("Libro encontrado:", this.libros, libro);
-        resolve(libro!);
-      }, 1000); }
-    );    
+  getLibros(): Observable<Libro[]> { // Obtener los libros de Firestore
+    const librosRef = collection(this.firestore, 'libros');
+    const data = collectionData(librosRef, { idField: 'id' }) // Obtener los datos de la colección 'books' y asignar el campo 'id' a cada libro
+    return data  as Observable<Libro[]>; // Se usa un Observable para que se actualice automáticamente cuando se agreguen, actualicen o eliminen libros en Firestore
+  } 
+
+  async addLibro(libro: Libro) {
+    const librosRef = collection(this.firestore, 'libros');
+    addDoc(librosRef, libro); // Agregar un nuevo libro a la colección 'books' en Firestore
   }
 
-  generateUuid(): string {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-      const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
-      return v.toString(16);
-    });
+  async getLibroPorId(id: string): Promise<Libro | undefined> {
+    const libroDoc = doc(this.firestore, 'libros', id ); // Crear una referencia al documento del libro
+    const docSnap = await getDoc(libroDoc); // Obtener el documento del libro
+    if (docSnap.exists()) {
+      const data = docSnap.data() as Libro; // Convertir los datos del documento a tipo Book
+      return {...data, id: docSnap.id}; // Retornar el libro con su ID
+    } 
+    return undefined; // No se encontró el libro
   }
 
-  // Método para agregar un nuevo libro
-  agregarLibro(libro: Libro): Promise<Libro> {
-    const nuevoLibro: Libro = { 
-      ...libro, // Copia las propiedades del libro recibido
-      id: this.generateUuid()  // Genera un nuevo UUID para el 'id'
-      }; 
-    this.libros.push(nuevoLibro);   // Agrega el nuevo libro al arreglo
-    return Promise.resolve(nuevoLibro);
+  async updateBook(id: string, libro: Partial<Libro>) {
+    const libroRef = doc(this.firestore, 'libros', id); // Crear una referencia al documento del libro
+    await updateDoc(libroRef, libro); // Actualizar el libro en Firestore
+  }
+
+  async deleteBook(id: string){
+    const libroDoc = doc(this.firestore, 'libros', id); // Crear una referencia al documento del libro
+    await deleteDoc(libroDoc); // Eliminar el libro de Firestore
   }
 }

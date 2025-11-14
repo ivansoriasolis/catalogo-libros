@@ -4,6 +4,7 @@ import { LibroServicio } from '../servicios/libro-servicio';
 import { FormsModule } from '@angular/forms';
 import { Libro } from '../modelos/libro';
 import { Router, RouterLink } from '@angular/router';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-libro-lista',
@@ -30,9 +31,8 @@ export class LibroLista {
     this.seleccionado.emit(this.libroSeleccionado);
     this.router.navigate(['detalle', this.libroSeleccionado.id]);
   }
-
   async ngOnInit() {
-    this.libros = await this.libroServicio.getLibros();
+    this.libros = await firstValueFrom(this.libroServicio.getLibros());
     this.librosFiltrados = [...this.libros];
   }
 

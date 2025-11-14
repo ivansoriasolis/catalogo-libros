@@ -11,9 +11,10 @@ import { Libro } from '../modelos/libro';
   styleUrl: './libro-detalle.css'
 })
 export class LibroDetalle {
-  libro!: Libro;
+  libro?: Libro;
 
   constructor(private ruta: ActivatedRoute,
+    private router: Router,
     private libroServicio:LibroServicio
   ) { }
 
@@ -21,5 +22,14 @@ export class LibroDetalle {
     const id = this.ruta.snapshot.params['id'];
     const libro = await this.libroServicio.getLibroPorId(id);
     this.libro = libro;
+  }
+
+  editar(id: string) {
+    this.router.navigate(['/agregar', id]);
+  }
+
+  async eliminar(id: string) {
+    await this.libroServicio.deleteBook(id);
+    this.router.navigate(['/']);
   }
 }

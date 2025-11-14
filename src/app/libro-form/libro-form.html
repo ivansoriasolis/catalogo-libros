@@ -45,7 +45,9 @@
     La fecha de publicación es obligatoria.
   </div>
   <br>
-  <button type="submit" [disabled]="libroForm.invalid">Agregar libro</button>
+  <button type="submit" [disabled] = "libroForm.invalid || libroForm.pristine">
+    {{ esEdicion ? 'Actualizar Libro' : 'Agregar Libro' }}
+  </button>  <button (click)="cancelar()">Cancelar</button>
 </form>
 
 <div *ngIf="enviado">
