@@ -47,7 +47,8 @@
   <br>
   <button type="submit" [disabled] = "libroForm.invalid || libroForm.pristine">
     {{ esEdicion ? 'Actualizar Libro' : 'Agregar Libro' }}
-  </button>  <button (click)="cancelar()">Cancelar</button>
+  </button>
+  <button (click)="cancelar()">Cancelar</button>
 </form>
 
 <div *ngIf="enviado">

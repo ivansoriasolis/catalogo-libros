@@ -4,8 +4,8 @@
     <p>Autor: {{libro.autor}}</p>
     <p>Año: {{libro.anio}}</p>
     <p>Publicado: {{libro.fechaPublicacion | date:'longDate'}}</p>
-    <!-- <button (click)='editar(libro.id)'>Editar</button>
-    <button (click)='eliminar(libro.id)'>Eliminar</button> -->
+    <button (click)='editar(libro.id)'>Editar</button>
+    <button (click)='eliminar(libro.id)'>Eliminar</button>
 </div>
 
 <ng-template #noLibro>

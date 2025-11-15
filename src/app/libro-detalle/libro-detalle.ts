@@ -19,17 +19,18 @@ export class LibroDetalle {
   ) { }
 
   async ngOnInit() {
+    console.log("DETALLE");
     const id = this.ruta.snapshot.params['id'];
     const libro = await this.libroServicio.getLibroPorId(id);
     this.libro = libro;
   }
 
   editar(id: string) {
-    this.router.navigate(['/agregar', id]);
+    this.router.navigate(['/modificar', id]);
   }
 
   async eliminar(id: string) {
-    await this.libroServicio.deleteBook(id);
+    await this.libroServicio.eliminarLibro(id);
     this.router.navigate(['/']);
   }
 }

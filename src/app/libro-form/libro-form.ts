@@ -41,6 +41,7 @@ export class LibroForm {
   }
 
   async ngOnInit() {
+    console.log("FOMULARIO");
     const libros = await firstValueFrom(this.libroServicio.getLibros()); // Obtiene la lista de libros desde el servicio
     this.titulosExistentes = libros.map(libro => libro.titulo); // Mapea los títulos de los libros existentes para usarlos en la validación asíncrona
 
@@ -65,7 +66,7 @@ export class LibroForm {
     }
     const book = this.libroForm.value // Obtiene los valores del formulario
     if (this.esEdicion)
-      await this.libroServicio.updateBook(book.id, book) // Si es edición, actualiza el libro
+      await this.libroServicio.actualizarLibro(book.id, book) // Si es edición, actualiza el libro
     else
       await this.libroServicio.addLibro(book)
     this.router.navigate(['/catalogo']); // Redirige a la lista de libros después de guardar
