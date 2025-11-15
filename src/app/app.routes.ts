@@ -8,9 +8,10 @@ import { LibroForm } from './libro-form/libro-form';
 
 export const routes: Routes = [
     { path: '', component: LibroLista },
-    { path: 'detalle/:id', component: LibroDetalle, canActivate: [authGuard] },
+    { path: 'detalle/:id', component: LibroDetalle },
     { path: 'about', component: About},
     { path: 'login', component: Login},
     { path: 'agregar', component: LibroForm, canActivate: [authGuard] },
+    { path: 'modificar/:id', component: LibroForm, canActivate: [authGuard] },
 ];
 
