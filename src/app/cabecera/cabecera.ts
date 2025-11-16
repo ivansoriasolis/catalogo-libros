@@ -11,13 +11,14 @@ import { CommonModule } from '@angular/common';
 })
 export class Cabecera {
   auth$: any;
-  constructor(public authServicio: AuthServicio,
+  constructor(public authServicio: AuthServicio, // Inyectar el servicio de autenticación
     private router: Router
   ) { }
 
   ngOnInit() { 
   }
 
+  // Método para cerrar sesión
   cerrarSesion() {
     this.authServicio.logout();
     this.router.navigate(['/login']);

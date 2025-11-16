@@ -4,12 +4,13 @@
     <p>Autor: {{libro.autor}}</p>
     <p>Año: {{libro.anio}}</p>
     <p>Publicado: {{libro.fechaPublicacion | date:'longDate'}}</p>
-
+    <!-- Mostrar descripción solo si existe -->
+    <p *ngIf="libro.descripcion">Descripción: {{libro.descripcion}}</p>
+    <!-- Botones de editar y eliminar solo si el usuario está autenticado -->
     <ng-container *ngIf="authServicio.estadoAuth$ | async">
         <button (click)='editar(libro.id)'>Editar</button>
         <button (click)='eliminar(libro.id)'>Eliminar</button>
     </ng-container>
-
 </div>
 
 <ng-template #noLibro>
