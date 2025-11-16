@@ -1,8 +1,14 @@
 <nav>
     <h1>Catálogo de libros</h1>
     <a [routerLink]="''">Inicio</a> |
-    <a [routerLink]="'agregar'">Agregar libro</a> |
     <a [routerLink]="'about'">About</a> |
-    <a [routerLink]="'login'">Login</a> |
+    <ng-container *ngIf="authServicio.estadoAuth$| async; else sinSesion">
+        <a [routerLink]="'agregar'">Agregar Libro</a> |
+        <a href ='#' (click)="cerrarSesion()">Cerrar sesión</a> |
+    </ng-container>
 
+    <ng-template #sinSesion>
+        <a [routerLink]="'login'">Login</a> |
+    </ng-template>
+    
 </nav>

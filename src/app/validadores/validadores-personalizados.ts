@@ -22,3 +22,12 @@ export function validadorTituloExiste( titulosExistentes: string[] ) {
              ) );
     };
 }   
+
+export function passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
+  const password = control.get('password')?.value;
+  const confirmPassword = control.get('confirmPassword')?.value;
+  if (password !== confirmPassword) {
+    return { passwordsDoNotMatch: true };
+  }
+  return null;
+}

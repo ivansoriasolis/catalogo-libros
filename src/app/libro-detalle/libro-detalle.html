@@ -4,8 +4,12 @@
     <p>Autor: {{libro.autor}}</p>
     <p>Año: {{libro.anio}}</p>
     <p>Publicado: {{libro.fechaPublicacion | date:'longDate'}}</p>
-    <button (click)='editar(libro.id)'>Editar</button>
-    <button (click)='eliminar(libro.id)'>Eliminar</button>
+
+    <ng-container *ngIf="authServicio.estadoAuth$ | async">
+        <button (click)='editar(libro.id)'>Editar</button>
+        <button (click)='eliminar(libro.id)'>Eliminar</button>
+    </ng-container>
+
 </div>
 
 <ng-template #noLibro>

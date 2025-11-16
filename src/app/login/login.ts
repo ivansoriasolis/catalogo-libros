@@ -1,30 +1,54 @@
 import { Component } from '@angular/core';
-import { Auth } from '../servicios/auth';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { AuthServicio } from '../servicios/auth-servicio';
 
 @Component({
   selector: 'app-login',
-  imports: [CommonModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink],
   templateUrl: './login.html',
   styleUrl: './login.css'
 })
 export class Login {
-  constructor(private auth:Auth,
-    private router: Router
-  ) { }
+  loginForm: FormGroup;
+  errorMessage: string = ''; // Mensaje de error para mostrar al usuario
 
-  esAutenticado(): boolean {
-    return this.auth.esAutenticado();
+  constructor(public authService:AuthServicio, 
+    private fb: FormBuilder,
+    private router: Router,
+  ) { 
+    this.loginForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required]],
+    });
   }
 
-  login(){
-    this.auth.login();
-    this.router.navigate(['/agregar']);
+  ngOnInit(): void {
+    this.authService.estadoAuth$.subscribe(user => {
+      if (user) {
+        this.router.navigate(['/catalogo']); // Redirigir al catálogo si el usuario está autenticado
+      }
+    });
   }
 
-  logout(){
-    this.auth.logout();
-    this.router.navigate(['/']);
+  async onLogin() { 
+    if (this.loginForm.invalid)
+      return;
+    const { email, password } = this.loginForm.value;
+    try {
+      await this.authService.login(email, password); // Llama al servicio de autenticación para iniciar sesión
+    } catch (error) {
+      this.errorMessage = "Error al iniciar sesión. Por favor, verifica tus credenciales.";
+    }
+  }
+
+  async onLoginWithGoogle() {
+    try {
+      await this.authService.loginWithGoogle(); // Llama al servicio de autenticación para iniciar sesión con Google
+      this.router.navigate(['/catalogo']); // Redirigir al catálogo después del login exitoso
+    } catch (error) {
+      this.errorMessage = "Error al iniciar sesión con Google. Por favor, intenta nuevamente.";
+    }
   }
 }
