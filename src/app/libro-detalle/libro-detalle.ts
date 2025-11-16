@@ -3,6 +3,7 @@ import { Component, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LibroServicio } from '../servicios/libro-servicio';
 import { Libro } from '../modelos/libro';
+import { AuthServicio } from '../servicios/auth-servicio';
 
 @Component({
   selector: 'app-libro-detalle',
@@ -15,7 +16,8 @@ export class LibroDetalle {
 
   constructor(private ruta: ActivatedRoute,
     private router: Router,
-    private libroServicio:LibroServicio
+    private libroServicio:LibroServicio,
+    public authServicio:AuthServicio,
   ) { }
 
   async ngOnInit() {

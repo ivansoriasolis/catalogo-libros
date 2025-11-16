@@ -1,2 +1,26 @@
-<button *ngIf='!esAutenticado()' (click)="login()">Login</button>
-<button *ngIf='esAutenticado()' (click)="logout()">Logout</button>
+<div>
+    <h2>Iniciar sesión</h2>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+        <input formControlName="email" type="email" placeholder="Correo electrónico" />
+        <br>
+        <input formControlName="password" type="password" placeholder="Contraseña" />
+        <br>
+        <button type="submit" [disabled]="loginForm.invalid">
+            Iniciar sesión
+        </button>
+    </form>
+
+    <button (click)="onLoginWithGoogle()">
+        Iniciar sesión con Google
+    </button>
+
+    <div *ngIf="errorMessage">
+        {{ errorMessage }}
+    </div>
+
+    <div>
+        ¿No tienes una cuenta?
+        <a [routerLink]="['/registro']">Registrarse</a>
+    </div>
+</div>
