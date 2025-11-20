@@ -7,6 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { validadorAnio } from '../validadores/validadores-personalizados';
 import { validadorTituloExiste } from '../validadores/validadores-asincronos';
 import { firstValueFrom } from 'rxjs';
+import { AuthServicio } from '../servicios/auth-servicio';
 
 @Component({
   selector: 'app-libro-form',
@@ -22,10 +23,16 @@ export class LibroForm {
   esEdicion: boolean = false;
   enviado: boolean = false;
 
+  antiguaUrl: string | undefined;
+
+  archivoSeleccionado!: File;
+  imagenPreview: string | ArrayBuffer | null = null;
+
   constructor(private libroServicio: LibroServicio,
     private fb: FormBuilder,
     private router: Router,
     private route: ActivatedRoute,
+    private authServicio: AuthServicio,
   ) {
     this.libroForm = this.fb.group({
       id: [''], // Inicializa el ID como una cadena vacía, se llenará al editar un libro
@@ -41,7 +48,6 @@ export class LibroForm {
   }
 
   async ngOnInit() {
-    console.log("FOMULARIO");
     const libros = await firstValueFrom(this.libroServicio.getLibros()); // Obtiene la lista de libros desde el servicio
     this.titulosExistentes = libros.map(libro => libro.titulo); // Mapea los títulos de los libros existentes para usarlos en la validación asíncrona
 
@@ -52,8 +58,10 @@ export class LibroForm {
       this.esEdicion = true; // Cambia a modo edición
       const libro = await this.libroServicio.getLibroPorId(id); // Obtiene el libro por ID
       if (libro) {
+        this.antiguaUrl = libro.imagenUrl; // Guarda la URL antigua de la imagen para posibles actualizaciones
         this.libroForm.patchValue(libro); // Rellena el formulario con los datos del libro
         this.titulosExistentes = this.titulosExistentes.filter(title => title !== libro.titulo); // Elimina el título del libro actual de los títulos existentes para evitar conflictos en la validación
+        this.imagenPreview = libro.imagenUrl ? libro.imagenUrl : null; // Muestra la imagen existente si está disponible
       }
     }
     this.libroForm.get('titulo')?.setAsyncValidators(validadorTituloExiste(this.titulosExistentes)); // Establece el validador asíncrono para el título al cargar los títulos existentes
@@ -64,20 +72,31 @@ export class LibroForm {
       this.libroForm.markAllAsTouched(); // Marca todos los campos como tocados para mostrar errores
       return; // No envía el formulario si es inválido
     }
-    const book = this.libroForm.value // Obtiene los valores del formulario
+    const libro = this.libroForm.value // Obtiene los valores del formulario
+
     if (this.esEdicion)
-      await this.libroServicio.actualizarLibro(book.id, book) // Si es edición, actualiza el libro
-    else
-      await this.libroServicio.addLibro(book)
+      await this.libroServicio.actualizarLibro(libro.id, libro, this.archivoSeleccionado, this.antiguaUrl) // Si es edición, actualiza el libro
+    else{
+      const usuarioId = this.authServicio.getUsuarioId(); // Obtiene el ID del usuario actual
+      const propietarioId = usuarioId ? usuarioId : 'desconocido'; // Usa 'desconocido' si no hay usuario autenticado
+      libro.propietarioId = propietarioId; // Asigna el ID del propietario al libro
+      await this.libroServicio.addLibro(libro, this.archivoSeleccionado);
+    }
+    this.libroForm.reset(); // Resetea el formulario después de guardar
+    this.archivoSeleccionado = undefined!; // Resetea el archivo seleccionado
+    this.imagenPreview = null; // Resetea la vista previa de la imagen
+    this.enviado = true;
     this.router.navigate(['/catalogo']); // Redirige a la lista de libros después de guardar
   }
 
-  async onSubmit() {
-    this.enviado = true;
-    const libro = this.libroForm.value;
-    await this.libroServicio.addLibro(libro);
-    console.log('Libro agregado:', libro);
-    this.router.navigate(['/']);
+  onArchivoSeleccionado(event: any) {
+    this.archivoSeleccionado = event.target.files[0];
+    if(this.archivoSeleccionado){
+      const reader = new FileReader();
+      reader.onload = () => this.imagenPreview = reader.result;
+      reader.readAsDataURL(this.archivoSeleccionado);
+    }
+    this.libroForm.markAsDirty(); // Marca el formulario como modificado
   }
 
   cancelar() {

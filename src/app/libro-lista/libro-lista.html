@@ -2,7 +2,11 @@
 <input type="text" [(ngModel)]="textoBuscado" (input)="onChange()" placeholder="Buscar libro...">
 <p>Buscando: {{textoBuscado}}</p>
 <ul>
-  <li *ngFor="let libro of librosFiltrados">
-    <a [routerLink]="['/detalle', libro.id]">{{ libro.titulo | uppercase}}</a>
-  </li>
+  <div *ngFor="let libro of librosFiltrados">
+    <br>
+    <a [routerLink]="['/detalle', libro.id]">
+      <img [src]="libro.imagenUrl" [width]="32">
+      <br>
+      {{ libro.titulo | uppercase}}</a>
+  </div>
 </ul>

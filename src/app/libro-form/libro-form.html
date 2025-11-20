@@ -1,4 +1,4 @@
-<form *ngIf="libroForm" [formGroup]="libroForm" (ngSubmit)="onSubmit()">
+<form *ngIf="libroForm" [formGroup]="libroForm" (ngSubmit)="guardar()">
   <label>Título:
     <input formControlName="titulo">
   </label>
@@ -45,6 +45,13 @@
     La fecha de publicación es obligatoria.
   </div>
   <br>
+  <div>
+    <input type="file" (change)="onArchivoSeleccionado($event)" placeholder="Imagen">
+  </div>
+  <br>
+  <div *ngIf="imagenPreview">
+    <img [src]="imagenPreview" [width]="100">
+  </div>
   <button type="submit" [disabled] = "libroForm.invalid || libroForm.pristine">
     {{ esEdicion ? 'Actualizar Libro' : 'Agregar Libro' }}
   </button>
