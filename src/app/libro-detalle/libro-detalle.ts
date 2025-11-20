@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { LibroServicio } from '../servicios/libro-servicio';
 import { Libro } from '../modelos/libro';
 import { AuthServicio } from '../servicios/auth-servicio';
+import { User } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-libro-detalle',
@@ -16,12 +17,11 @@ export class LibroDetalle {
 
   constructor(private ruta: ActivatedRoute,
     private router: Router,
-    private libroServicio:LibroServicio,
-    public authServicio:AuthServicio,
+    private libroServicio: LibroServicio,
+    public authServicio: AuthServicio,
   ) { }
 
   async ngOnInit() {
-    console.log("DETALLE");
     const id = this.ruta.snapshot.params['id'];
     const libro = await this.libroServicio.getLibroPorId(id);
     this.libro = libro;
@@ -35,4 +35,5 @@ export class LibroDetalle {
     await this.libroServicio.eliminarLibro(id);
     this.router.navigate(['/']);
   }
+
 }

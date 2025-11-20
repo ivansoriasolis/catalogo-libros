@@ -27,7 +27,7 @@ export class App {
     this.authServicio.estadoAuth$.subscribe((usuario) => {
       this.authVerificado = true; // Marca que la verificación ha sido completada
       if (usuario) { // Si el usuario está autenticado
-        this.router.navigate(['/cataologo']);
+        this.router.navigate(['/catalogo']);
       }  
       else {
         this.router.navigate(['/']);

@@ -2,7 +2,7 @@
     <h1>Catálogo de libros</h1>
     <a [routerLink]="''">Inicio</a> |
     <a [routerLink]="'about'">About</a> |
-    <ng-container *ngIf="(authServicio.estadoAuth$| async) as usuario; else sinSesion"> <!-- Usar el observable directamente en la plantilla -->
+    <ng-container *ngIf="(authServicio.estadoAuth$ | async) as usuario; else sinSesion"> <!-- Usar el observable directamente en la plantilla -->
         <a [routerLink]="'agregar'">Agregar Libro</a> |
         <a href ='#' (click)="cerrarSesion()">Cerrar sesión</a> |
         {{usuario.displayName || usuario.email}} <!-- Mostrar el nombre de usuario o correo electrónico -->

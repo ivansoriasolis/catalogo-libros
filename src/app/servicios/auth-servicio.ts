@@ -37,8 +37,13 @@ export class AuthServicio {
     );
   }
 
-  getUserId(): string | null {
+  getUsuarioId(): string | null {
     return this.auth.currentUser ? this.auth.currentUser.uid : null; // Retorna el ID del usuario autenticado o null si no hay ninguno
+  }
+
+  esPropietario(propietarioId:string): boolean {
+    const usuarioId = this.getUsuarioId();
+    return propietarioId === usuarioId;
   }
 }
 export { Auth };
