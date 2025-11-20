@@ -12,7 +12,7 @@ import { AuthServicio } from '../servicios/auth-servicio';
 })
 export class Login {
   loginForm: FormGroup;
-  errorMessage: string = ''; // Mensaje de error para mostrar al usuario
+  errorMessage: string = '';  
 
   constructor(public authService:AuthServicio, 
     private fb: FormBuilder,
@@ -27,7 +27,7 @@ export class Login {
   ngOnInit(): void {
     this.authService.estadoAuth$.subscribe(user => {
       if (user) {
-        this.router.navigate(['/catalogo']); // Redirigir al catálogo si el usuario está autenticado
+        this.router.navigate(['/catalogo']);  
       }
     });
   }
@@ -37,7 +37,7 @@ export class Login {
       return;
     const { email, password } = this.loginForm.value;
     try {
-      await this.authService.login(email, password); // Llama al servicio de autenticación para iniciar sesión
+      await this.authService.login(email, password);  
     } catch (error) {
       this.errorMessage = "Error al iniciar sesión. Por favor, verifica tus credenciales.";
     }
@@ -45,8 +45,8 @@ export class Login {
 
   async onLoginWithGoogle() {
     try {
-      await this.authService.loginWithGoogle(); // Llama al servicio de autenticación para iniciar sesión con Google
-      this.router.navigate(['/catalogo']); // Redirigir al catálogo después del login exitoso
+      await this.authService.loginWithGoogle();  
+      this.router.navigate(['/catalogo']);  
     } catch (error) {
       this.errorMessage = "Error al iniciar sesión con Google. Por favor, intenta nuevamente.";
     }

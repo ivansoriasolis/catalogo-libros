@@ -31,10 +31,10 @@ export class RegistroForm {
       return;
     }
     const { email, password } = this.registerForm.value;
-    // Aquí puedes llamar al servicio de registro
+     
     try {
       await this.authService.register(email, password);
-      this.router.navigate(['/catalogo']); // Redirigir al catálogo después del registro exitoso   
+      this.router.navigate(['/catalogo']);  
     } catch (error) {
       console.error('Error al registrar:', error);
     };

@@ -35,58 +35,58 @@ export class LibroForm {
     private authServicio: AuthServicio,
   ) {
     this.libroForm = this.fb.group({
-      id: [''], // Inicializa el ID como una cadena vacía, se llenará al editar un libro
+      id: [''],  
       titulo: ['', {
         validators: [Validators.required],
-        asyncValidators: [validadorTituloExiste(this.titulosExistentes)], // Validador asíncrono para verificar si el título ya existe
+        asyncValidators: [validadorTituloExiste(this.titulosExistentes)],  
       }],
       autor: ['', Validators.required],
       descripcion: [''],
-      anio: [0, [Validators.required, Validators.pattern('^[0-9]{4}$'), validadorAnio]],  // Validador personalizado para el año
-      fechaPublicacion: [null, Validators.required] // Inicializa la fecha de publicación como null
-    }, { updateOn: 'change' }); // Actualiza el formulario solo al enviar, no al cambiar los valores de los campos
+      anio: [0, [Validators.required, Validators.pattern('^[0-9]{4}$'), validadorAnio]],   
+      fechaPublicacion: [null, Validators.required]  
+    }, { updateOn: 'change' });  
   }
 
   async ngOnInit() {
-    const libros = await firstValueFrom(this.libroServicio.getLibros()); // Obtiene la lista de libros desde el servicio
-    this.titulosExistentes = libros.map(libro => libro.titulo); // Mapea los títulos de los libros existentes para usarlos en la validación asíncrona
+    const libros = await firstValueFrom(this.libroServicio.getLibros());  
+    this.titulosExistentes = libros.map(libro => libro.titulo);  
 
     const params = await firstValueFrom(this.route.paramMap);
-    const id = params.get('id'); // Obtiene el ID del libro desde los parámetros de la ruta
+    const id = params.get('id');  
 
-    if (id) { // Si hay un ID, significa que estamos en modo edición
-      this.esEdicion = true; // Cambia a modo edición
-      const libro = await this.libroServicio.getLibroPorId(id); // Obtiene el libro por ID
+    if (id) {  
+      this.esEdicion = true;  
+      const libro = await this.libroServicio.getLibroPorId(id);  
       if (libro) {
-        this.antiguaUrl = libro.imagenUrl; // Guarda la URL antigua de la imagen para posibles actualizaciones
-        this.libroForm.patchValue(libro); // Rellena el formulario con los datos del libro
-        this.titulosExistentes = this.titulosExistentes.filter(title => title !== libro.titulo); // Elimina el título del libro actual de los títulos existentes para evitar conflictos en la validación
-        this.imagenPreview = libro.imagenUrl ? libro.imagenUrl : null; // Muestra la imagen existente si está disponible
+        this.antiguaUrl = libro.imagenUrl;  
+        this.libroForm.patchValue(libro);  
+        this.titulosExistentes = this.titulosExistentes.filter(title => title !== libro.titulo);  
+        this.imagenPreview = libro.imagenUrl ? libro.imagenUrl : null;  
       }
     }
-    this.libroForm.get('titulo')?.setAsyncValidators(validadorTituloExiste(this.titulosExistentes)); // Establece el validador asíncrono para el título al cargar los títulos existentes
+    this.libroForm.get('titulo')?.setAsyncValidators(validadorTituloExiste(this.titulosExistentes));  
   }
 
   async guardar() {
     if (this.libroForm.invalid) {
-      this.libroForm.markAllAsTouched(); // Marca todos los campos como tocados para mostrar errores
-      return; // No envía el formulario si es inválido
+      this.libroForm.markAllAsTouched();  
+      return;  
     }
-    const libro = this.libroForm.value // Obtiene los valores del formulario
+    const libro = this.libroForm.value  
 
     if (this.esEdicion)
-      await this.libroServicio.actualizarLibro(libro.id, libro, this.archivoSeleccionado, this.antiguaUrl) // Si es edición, actualiza el libro
+      await this.libroServicio.actualizarLibro(libro.id, libro, this.archivoSeleccionado, this.antiguaUrl)  
     else{
-      const usuarioId = this.authServicio.getUsuarioId(); // Obtiene el ID del usuario actual
-      const propietarioId = usuarioId ? usuarioId : 'desconocido'; // Usa 'desconocido' si no hay usuario autenticado
-      libro.propietarioId = propietarioId; // Asigna el ID del propietario al libro
+      const usuarioId = this.authServicio.getUsuarioId();  
+      const propietarioId = usuarioId ? usuarioId : 'desconocido';  
+      libro.propietarioId = propietarioId;  
       await this.libroServicio.addLibro(libro, this.archivoSeleccionado);
     }
-    this.libroForm.reset(); // Resetea el formulario después de guardar
-    this.archivoSeleccionado = undefined!; // Resetea el archivo seleccionado
-    this.imagenPreview = null; // Resetea la vista previa de la imagen
+    this.libroForm.reset();  
+    this.archivoSeleccionado = undefined!;  
+    this.imagenPreview = null;  
     this.enviado = true;
-    this.router.navigate(['/catalogo']); // Redirige a la lista de libros después de guardar
+    this.router.navigate(['/catalogo']);  
   }
 
   onArchivoSeleccionado(event: any) {
@@ -96,7 +96,7 @@ export class LibroForm {
       reader.onload = () => this.imagenPreview = reader.result;
       reader.readAsDataURL(this.archivoSeleccionado);
     }
-    this.libroForm.markAsDirty(); // Marca el formulario como modificado
+    this.libroForm.markAsDirty();  
   }
 
   cancelar() {

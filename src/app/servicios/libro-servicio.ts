@@ -30,51 +30,51 @@ export class LibroServicio {
   async addImagen(imagenArchivo: File, usuarioId: string): Promise<string> {
     if (imagenArchivo) {
       const imagenPath = `libro-portadas/${usuarioId}/${Date.now()}_${imagenArchivo.name}`;
-      const imagenRef = ref(this.storage, imagenPath); // Crear una referencia en Firebase Storage
-      await uploadBytes(imagenRef, imagenArchivo); // Subir el archivo de imagen a Firebase Storage
-      const imagenURL = await getDownloadURL(imagenRef); // Obtener la URL de descarga de la imagen subida
-      return imagenURL; // Retornar la URL de la imagen
+      const imagenRef = ref(this.storage, imagenPath);  
+      await uploadBytes(imagenRef, imagenArchivo);  
+      const imagenURL = await getDownloadURL(imagenRef);  
+      return imagenURL;  
     }
     return '';
   }
 
   async addLibro(libro: Libro, imagenArchivo: File) {
-    libro.imagenUrl = await this.addImagen(imagenArchivo, libro.propietarioId!); // Subir la imagen y obtener su URL
-    const {id, ...libroData} = libro; // Excluir el ID del libro si existe
+    libro.imagenUrl = await this.addImagen(imagenArchivo, libro.propietarioId!);  
+    const {id, ...libroData} = libro;  
     addDoc(this.librosRef, libroData); 
   }
 
   async getLibroPorId(id: string): Promise<Libro | undefined> {
-    const libroDoc = doc(this.firestore, 'libros', id ); // Crear una referencia al documento del libro
-    const docSnap = await getDoc(libroDoc); // Obtener el documento del libro
+    const libroDoc = doc(this.firestore, 'libros', id );  
+    const docSnap = await getDoc(libroDoc);  
     if (docSnap.exists()) {
-      const data = docSnap.data() as Libro; // Convertir los datos del documento a tipo Libro
-      data.id = docSnap.id; // Asignar el ID del documento al libro
-      return data; // Retornar el libro con su ID
+      const data = docSnap.data() as Libro;  
+      data.id = docSnap.id;  
+      return data;  
     } 
-    return undefined; // No se encontró el libro
+    return undefined;  
   }
 
   async actualizarLibro(id: string, libro: Partial<Libro>, imagenArchivo?: File, antiguaUrl?: string ) {
-    const libroRef = doc(this.firestore, 'libros', id); // Crear una referencia al documento del libro
+    const libroRef = doc(this.firestore, 'libros', id);  
     if (imagenArchivo) {
       if (antiguaUrl) {
-        await this.borrarImagenStorage(antiguaUrl); // Borrar la imagen antigua si existe
+        await this.borrarImagenStorage(antiguaUrl);  
       }
-      const nuevaImagenUrl = await this.addImagen(imagenArchivo, libro.propietarioId!); // Subir la nueva imagen y obtener su URL
-      libro.imagenUrl = nuevaImagenUrl; // Actualizar la URL de la imagen en el libro
+      const nuevaImagenUrl = await this.addImagen(imagenArchivo, libro.propietarioId!);  
+      libro.imagenUrl = nuevaImagenUrl;  
     }
-    updateDoc(libroRef, libro); // Actualizar el libro en Firestore
+    updateDoc(libroRef, libro);  
   }
 
   async eliminarLibro(id: string){
-    const libro = await this.getLibroPorId(id); // Obtener el libro por su ID
+    const libro = await this.getLibroPorId(id);  
     if (libro && libro.imagenUrl) {
-      await this.borrarImagenStorage(libro.imagenUrl); // Borrar la imagen asociada al libro si existe
+      await this.borrarImagenStorage(libro.imagenUrl);  
     }
 
-    const libroDoc = doc(this.firestore, 'libros', id); // Crear una referencia al documento del libro
-    await deleteDoc(libroDoc); // Eliminar el libro de Firestore
+    const libroDoc = doc(this.firestore, 'libros', id);  
+    await deleteDoc(libroDoc);  
   }
 
   async borrarImagenStorage(imagenUrl: string): Promise<void> {
@@ -82,7 +82,7 @@ export class LibroServicio {
       try {
         const imagenPath = this.getImagenPathDeURL(imagenUrl);
         const imagenStorageRef = ref(this.storage, imagenPath);
-        await deleteObject(imagenStorageRef); // Borrar la imagen de Firebase Storage
+        await deleteObject(imagenStorageRef);
       } catch (error) {
         console.error('Error al borrar la imagen de Storage:', error);
       }

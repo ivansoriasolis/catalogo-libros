@@ -14,7 +14,7 @@ import { AuthServicio } from './servicios/auth-servicio';
 })
 export class App {
   protected readonly title = signal('catologo-libros');
-  authVerificado = false; // Nueva variable para rastrear la verificación de autenticación
+  authVerificado = false;  
 
   libroSeleccionado: any = null;
 
@@ -22,11 +22,11 @@ export class App {
     private router: Router,
   ){}
 
-  // Verifica el estado de autenticación al iniciar la aplicación
+   
   ngOnInit():void{
     this.authServicio.estadoAuth$.subscribe((usuario) => {
-      this.authVerificado = true; // Marca que la verificación ha sido completada
-      if (usuario) { // Si el usuario está autenticado
+      this.authVerificado = true;  
+      if (usuario) {  
         this.router.navigate(['/catalogo']);
       }  
       else {
