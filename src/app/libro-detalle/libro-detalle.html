@@ -1,19 +1,21 @@
-<div *ngIf="libro else noLibro">
+@if (libro) {
+<div>
     <h3>Detalles del libro</h3>
-    <img [src] = "libro.imagenUrl ? libro.imagenUrl : 'sin_imagen.png'" width="100px">    
+    <img [src]="libro.imagenUrl ? libro.imagenUrl : 'sin_imagen.png'" width="100px">
     <p><strong>{{libro.titulo|uppercase}}</strong></p>
     <p>Autor: {{libro.autor}}</p>
     <p>Año: {{libro.anio}}</p>
     <p>Publicado: {{libro.fechaPublicacion | date:'longDate'}}</p>
-    <!-- Mostrar descripción solo si existe -->
-    <p *ngIf="libro.descripcion">Descripción: {{libro.descripcion}}</p>
+    <!-- Mostr|ar descripción solo si existe -->
+    @if (libro.descripcion) {
+    <p>Descripción: {{libro.descripcion}}</p>
+    }
     <!-- Botones de editar y eliminar solo si el usuario está autenticado -->
-    <ng-container *ngIf=" (authServicio.estadoAuth$ | async) && authServicio.esPropietario(libro.propietarioId!) ">
-        <button (click)='editar(libro.id!)'>Editar</button>
-        <button (click)='eliminar(libro.id!)'>Eliminar</button>
-    </ng-container>
+    @if ((authServicio.estadoAuth$ | async) && authServicio.esPropietario(libro.propietarioId!)) {
+    <button (click)='editar(id!)'>Editar</button>
+    <button (click)='eliminar(id!)'>Eliminar</button>
+    }
 </div>
-
-<ng-template #noLibro>
-    <p>Cargando...</p>
-</ng-template>
+} @else {
+<p>Cargando...</p>
+}

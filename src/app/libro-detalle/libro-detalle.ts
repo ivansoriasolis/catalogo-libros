@@ -14,6 +14,7 @@ import { User } from '@angular/fire/auth';
 })
 export class LibroDetalle {
   libro?: Libro;
+  id: string = '';
 
   constructor(private ruta: ActivatedRoute,
     private router: Router,
@@ -22,9 +23,8 @@ export class LibroDetalle {
   ) { }
 
   async ngOnInit() {
-    const id = this.ruta.snapshot.params['id'];
-    const libro = await this.libroServicio.getLibroPorId(id);
-    this.libro = libro;
+    this.id = this.ruta.snapshot.params['id'];
+    this.libro = await this.libroServicio.getLibroPorId(this.id);
   }
 
   editar(id: string) {

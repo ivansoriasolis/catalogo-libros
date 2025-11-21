@@ -8,27 +8,27 @@ import { AuthServicio } from './servicios/auth-servicio';
 
 @Component({
   selector: 'app-root',
-  imports: [Cabecera, RouterOutlet, FormsModule, CommonModule, RouterOutlet],
+  imports: [Cabecera, RouterOutlet, FormsModule, CommonModule],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
 export class App {
   protected readonly title = signal('catologo-libros');
-  authVerificado = false;  
+  authVerificado = false;
 
   libroSeleccionado: any = null;
 
   constructor(private authServicio: AuthServicio,
     private router: Router,
-  ){}
+  ) { }
 
-   
-  ngOnInit():void{
+
+  ngOnInit(): void {
     this.authServicio.estadoAuth$.subscribe((usuario) => {
-      this.authVerificado = true;  
-      if (usuario) {  
+      this.authVerificado = true;
+      if (usuario) {
         this.router.navigate(['/catalogo']);
-      }  
+      }
       else {
         this.router.navigate(['/']);
       }

@@ -1,9 +1,8 @@
-<div *ngIf="!authVerificado" else contenidoPrincipal>
-  Verificando sesión...
+@if (!authVerificado) {
+Verificando sesión...
+} @else {
+<app-cabecera></app-cabecera>
+<div class="contenedor">
+  <router-outlet></router-outlet>
 </div>
-<div *ngIf="authVerificado">
-  <app-cabecera></app-cabecera>
-  <div class="contenedor">
-    <router-outlet></router-outlet>
-  </div>
-</div>
+}

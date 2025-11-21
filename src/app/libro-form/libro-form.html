@@ -1,4 +1,4 @@
-<form *ngIf="libroForm" [formGroup]="libroForm" (ngSubmit)="guardar()">
+<form [formGroup]="libroForm" (ngSubmit)="guardar()">
   <label>Título:
     <input formControlName="titulo">
   </label>
@@ -52,7 +52,7 @@
   <div *ngIf="imagenPreview">
     <img [src]="imagenPreview" [width]="100">
   </div>
-  <button type="submit" [disabled] = "libroForm.invalid || libroForm.pristine">
+  <button type="submit" [disabled]="libroForm.invalid || libroForm.pristine">
     {{ esEdicion ? 'Actualizar Libro' : 'Agregar Libro' }}
   </button>
   <button (click)="cancelar()">Cancelar</button>

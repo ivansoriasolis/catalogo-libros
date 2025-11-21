@@ -17,7 +17,6 @@ import { AuthServicio } from '../servicios/auth-servicio';
 })
 export class LibroForm {
   libroForm!: FormGroup;
-  libro!: Libro;
   titulosExistentes: string[] = [];
 
   esEdicion: boolean = false;
@@ -31,72 +30,62 @@ export class LibroForm {
   constructor(private libroServicio: LibroServicio,
     private fb: FormBuilder,
     private router: Router,
-    private route: ActivatedRoute,
+    private ruta: ActivatedRoute,
     private authServicio: AuthServicio,
   ) {
     this.libroForm = this.fb.group({
-      id: [''],  
+      id: [''],
       titulo: ['', {
         validators: [Validators.required],
-        asyncValidators: [validadorTituloExiste(this.titulosExistentes)],  
+        asyncValidators: [validadorTituloExiste(this.titulosExistentes)],
       }],
       autor: ['', Validators.required],
       descripcion: [''],
-      anio: [0, [Validators.required, Validators.pattern('^[0-9]{4}$'), validadorAnio]],   
-      fechaPublicacion: [null, Validators.required]  
-    }, { updateOn: 'change' });  
+      anio: [0, [Validators.required, Validators.pattern('^[0-9]{4}$'), validadorAnio]],
+      fechaPublicacion: [null, Validators.required]
+    },
+      { updateOn: 'change' });
   }
 
   async ngOnInit() {
-    const libros = await firstValueFrom(this.libroServicio.getLibros());  
-    this.titulosExistentes = libros.map(libro => libro.titulo);  
-
-    const params = await firstValueFrom(this.route.paramMap);
-    const id = params.get('id');  
-
-    if (id) {  
-      this.esEdicion = true;  
-      const libro = await this.libroServicio.getLibroPorId(id);  
+    this.libroServicio.getLibros().subscribe((libros) => {
+      this.titulosExistentes = libros.map(libro => libro.titulo);
+    });
+    const id = this.ruta.snapshot.params['id'];
+    if (id) {
+      this.esEdicion = true;
+      const libro = await this.libroServicio.getLibroPorId(id);
       if (libro) {
-        this.antiguaUrl = libro.imagenUrl;  
-        this.libroForm.patchValue(libro);  
-        this.titulosExistentes = this.titulosExistentes.filter(title => title !== libro.titulo);  
-        this.imagenPreview = libro.imagenUrl ? libro.imagenUrl : null;  
+        this.antiguaUrl = libro.imagenUrl;
+        this.libroForm.patchValue(libro);
+        this.titulosExistentes = this.titulosExistentes.filter(titulo => titulo !== libro.titulo);
+        this.imagenPreview = libro.imagenUrl ? libro.imagenUrl : null;
       }
     }
-    this.libroForm.get('titulo')?.setAsyncValidators(validadorTituloExiste(this.titulosExistentes));  
+    this.libroForm.get('titulo')?.setAsyncValidators(validadorTituloExiste(this.titulosExistentes));
   }
 
   async guardar() {
-    if (this.libroForm.invalid) {
-      this.libroForm.markAllAsTouched();  
-      return;  
-    }
-    const libro = this.libroForm.value  
+    const libro = this.libroForm.value
+    libro.propietarioId = this.authServicio.getUsuarioId();
 
     if (this.esEdicion)
-      await this.libroServicio.actualizarLibro(libro.id, libro, this.archivoSeleccionado, this.antiguaUrl)  
-    else{
-      const usuarioId = this.authServicio.getUsuarioId();  
-      const propietarioId = usuarioId ? usuarioId : 'desconocido';  
-      libro.propietarioId = propietarioId;  
+      await this.libroServicio.actualizarLibro(libro.id, libro, this.archivoSeleccionado, this.antiguaUrl)
+    else
       await this.libroServicio.addLibro(libro, this.archivoSeleccionado);
-    }
-    this.libroForm.reset();  
-    this.archivoSeleccionado = undefined!;  
-    this.imagenPreview = null;  
+
     this.enviado = true;
-    this.router.navigate(['/catalogo']);  
+    this.router.navigate(['/catalogo']);
   }
 
   onArchivoSeleccionado(event: any) {
     this.archivoSeleccionado = event.target.files[0];
-    if(this.archivoSeleccionado){
+    if (this.archivoSeleccionado) {
       const reader = new FileReader();
       reader.onload = () => this.imagenPreview = reader.result;
       reader.readAsDataURL(this.archivoSeleccionado);
     }
-    this.libroForm.markAsDirty();  
+    this.libroForm.markAsDirty();
   }
 
   cancelar() {

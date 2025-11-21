@@ -9,6 +9,5 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './catalogo.css'
 })
 export class Catalogo {
-  libroSeleccionado: any = null;
-  tituloSeleccionado: string = '';
+
 }
