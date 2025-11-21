@@ -9,83 +9,66 @@ import { deleteObject, getDownloadURL, ref, Storage, uploadBytes } from '@angula
   providedIn: 'root'
 })
 export class LibroServicio {
-  libros: Libro[] = [];
-  titulos: string[] = [];
+  collection: string = 'libros';
+  carpeta: string = 'libro-portadas';
+
   private librosRef;
   
   constructor(private firestore: Firestore, private storage: Storage) { 
-    this.librosRef = collection(this.firestore, 'libros'); 
-  }
-
-  async getTitulos(){
-    const books = await firstValueFrom(this.getLibros()); 
-    return books.map(libro => libro.titulo); 
+    this.librosRef = collection(this.firestore, this.collection); 
   }
 
   getLibros(): Observable<Libro[]> {
-    const data = collectionData(this.librosRef, { idField: 'id' });
+    const data = collectionData(this.librosRef, { idField: 'id' }); 
     return data  as Observable<Libro[]>; 
   } 
 
-  async addImagen(imagenArchivo: File, usuarioId: string): Promise<string> {
+  async addImagen(imagenArchivo: File, usuarioId: string): Promise<string | undefined> {
     if (imagenArchivo) {
-      const imagenPath = `libro-portadas/${usuarioId}/${Date.now()}_${imagenArchivo.name}`;
+      const imagenPath = `${this.carpeta}/${usuarioId}/${Date.now()}_${imagenArchivo.name}`;
       const imagenRef = ref(this.storage, imagenPath);  
       await uploadBytes(imagenRef, imagenArchivo);  
-      const imagenURL = await getDownloadURL(imagenRef);  
-      return imagenURL;  
+      return await getDownloadURL(imagenRef);  
     }
-    return '';
+    return undefined; 
   }
 
   async addLibro(libro: Libro, imagenArchivo: File) {
     libro.imagenUrl = await this.addImagen(imagenArchivo, libro.propietarioId!);  
-    const {id, ...libroData} = libro;  
-    addDoc(this.librosRef, libroData); 
+    addDoc(this.librosRef, libro); 
   }
 
   async getLibroPorId(id: string): Promise<Libro | undefined> {
-    const libroDoc = doc(this.firestore, 'libros', id );  
+    const libroDoc = doc(this.firestore, this.collection, id );  
     const docSnap = await getDoc(libroDoc);  
-    if (docSnap.exists()) {
-      const data = docSnap.data() as Libro;  
-      data.id = docSnap.id;  
-      return data;  
-    } 
+    if (docSnap.exists()) 
+      return docSnap.data() as Libro;  
     return undefined;  
   }
 
   async actualizarLibro(id: string, libro: Partial<Libro>, imagenArchivo?: File, antiguaUrl?: string ) {
-    const libroRef = doc(this.firestore, 'libros', id);  
+    const libroRef = doc(this.firestore, this.collection, id);  
     if (imagenArchivo) {
-      if (antiguaUrl) {
-        await this.borrarImagenStorage(antiguaUrl);  
-      }
-      const nuevaImagenUrl = await this.addImagen(imagenArchivo, libro.propietarioId!);  
-      libro.imagenUrl = nuevaImagenUrl;  
+      if (antiguaUrl)
+        this.borrarImagenStorage(antiguaUrl);  
+      libro.imagenUrl = await this.addImagen(imagenArchivo, libro.propietarioId!);  
     }
     updateDoc(libroRef, libro);  
   }
 
   async eliminarLibro(id: string){
     const libro = await this.getLibroPorId(id);  
-    if (libro && libro.imagenUrl) {
-      await this.borrarImagenStorage(libro.imagenUrl);  
-    }
-
+    if (libro && libro.imagenUrl)
+      this.borrarImagenStorage(libro.imagenUrl);  
     const libroDoc = doc(this.firestore, 'libros', id);  
-    await deleteDoc(libroDoc);  
+    deleteDoc(libroDoc);  
   }
 
   async borrarImagenStorage(imagenUrl: string): Promise<void> {
     if (imagenUrl) {
-      try {
         const imagenPath = this.getImagenPathDeURL(imagenUrl);
         const imagenStorageRef = ref(this.storage, imagenPath);
         await deleteObject(imagenStorageRef);
-      } catch (error) {
-        console.error('Error al borrar la imagen de Storage:', error);
-      }
     }
   }
 
